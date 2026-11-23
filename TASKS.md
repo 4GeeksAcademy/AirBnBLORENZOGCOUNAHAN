@@ -308,17 +308,27 @@ npm run lint
 
 ### Componentes Estilizados
 - [x] Header con estilos Tailwind
-- [x] SearchBar con input styled
-- [x] CategoryFilter con botones
-- [x] ListingCard con imagen, título, precio
-- [x] ListingGrid con grid responsivo
-- [x] etc.
+- [x] SearchBar con input styled (placeholder, focus states)
+- [x] CategoryFilter con botones interactivos
+- [x] ListingCard con imagen, título, precio, rating
+- [x] ListingGrid con grid responsivo (1→2→3 cols)
+- [x] BackButton con estilos Tailwind
+- [x] CatalogHeader con contador de resultados
+- [x] PhotoGallery con navegación
+- [x] RoomHeader con información de habitación
+- [x] HostInfo con datos de anfitrión
+- [x] AmenitiesList con lista de amenidades
+- [x] BookingCard con formulario de reserva
+- [x] MapPlaceholder con contenedor para mapa
+- [x] Footer con estilos Tailwind
 
 ### Responsive Classes
 - [x] Breakpoint `md:` en 768px
 - [x] Breakpoint `lg:` en 1024px
 - [x] Grid adapta con breakpoints
 - [x] Tipografía adapta con breakpoints
+- [x] Imágenes responsive
+- [x] Flexbox/Grid correctos en todos los tamaños
 
 ---
 
