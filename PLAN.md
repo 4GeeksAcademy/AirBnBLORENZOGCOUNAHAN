@@ -6,6 +6,19 @@
 
 ---
 
+## 📸 Referencias Visuales
+
+Consulta `ScreenShotsAirbnb/` para ver ejemplos visuales de la estructura implementada:
+
+- **airbnbhome.png** - Home page (/) con SearchBar, CategoryFilter, ListingGrid
+- **airbnbhomeconmodal.png** - Home con modal de preferencias (UX adicional)
+- **airbnbhomes.png** - Catalog page (/catalog) con MapPlaceholder
+- **airbnbrooms.png** - Room Detail page (/rooms/[id]) con PhotoGallery, BookingCard, AmenitiesList
+
+Estas imágenes sirven como guía visual para la implementación de cada página y componente.
+
+---
+
 ## 📂 Estructura de Carpetas (ACTUAL)
 
 ```
@@ -18,6 +31,13 @@
 │   ├── README.md                      🔧 Instalación
 │   ├── context.md                     🎨 Brief de producto
 │   └── ESTATUS_PROYECTO.md            📊 Estado + próximos pasos
+│
+├── 📸 REFERENCIAS VISUALES
+│   └── ScreenShotsAirbnb/             Visual reference para cada página
+│       ├── airbnbhome.png            🏠 Home page
+│       ├── airbnbhomeconmodal.png    🍪 Home con modal
+│       ├── airbnbhomes.png           📋 Catalog page
+│       └── airbnbrooms.png           🏨 Room detail page
 │
 ├── 📄 CONFIGURACIÓN
 │   ├── package.json                   Dependencies

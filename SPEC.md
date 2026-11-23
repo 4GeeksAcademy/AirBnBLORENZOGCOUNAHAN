@@ -18,15 +18,31 @@ Implementar una réplica funcional de la interfaz de Airbnb usando Next.js 16 co
 
 ---
 
+## 📸 Referencias Visuales
+
+Consulta la carpeta `ScreenShotsAirbnb/` para ver ejemplos visuales de cada página:
+
+| Página | Archivo | Descripción |
+|--------|---------|-------------|
+| Home | `airbnbhome.png` | Página de inicio con búsqueda y filtros |
+| Home (Modal) | `airbnbhomeconmodal.png` | Home con modal de cookies/preferencias |
+| Catalog | `airbnbhomes.png` | Página de catálogo con resultados de búsqueda |
+| Room Detail | `airbnbrooms.png` | Página de detalle con galería y reserva |
+
+Estas imágenes muestran el diseño y flujo de usuario esperado.
+
+---
+
 ## 📖 Tabla de Contenidos
 
 1. [Objetivos](#objetivos)
-2. [Tech Stack](#tech-stack)
-3. [Especificación por Página](#especificación-por-página)
-4. [Componentes (13 total)](#componentes)
-5. [Criterios de Evaluación](#criterios-de-evaluación)
-6. [Convenciones de Código](#convenciones-de-código)
-7. [Retos Opcionales](#retos-opcionales)
+2. [Referencias Visuales](#referencias-visuales)
+3. [Tech Stack](#tech-stack)
+4. [Especificación por Página](#especificación-por-página)
+5. [Componentes (13 total)](#componentes)
+6. [Criterios de Evaluación](#criterios-de-evaluación)
+7. [Convenciones de Código](#convenciones-de-código)
+8. [Retos Opcionales](#retos-opcionales)
 
 ---
 
@@ -73,6 +89,8 @@ Implementar una réplica funcional de la interfaz de Airbnb usando Next.js 16 co
 ### 🏠 Página Home (`/`)
 
 **Propósito**: Pantalla principal con búsqueda, filtros y grid de alojamientos.
+
+**Referencia Visual**: Ver `ScreenShotsAirbnb/airbnbhome.png` y `ScreenShotsAirbnb/airbnbhomeconmodal.png`
 
 **Layout**:
 ```
@@ -135,6 +153,8 @@ useEffect(() => {
 
 **Propósito**: Resultados de búsqueda con ordenación y mapa.
 
+**Referencia Visual**: Ver `ScreenShotsAirbnb/airbnbhomes.png`
+
 **Layout**:
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -192,6 +212,8 @@ const sortedListings = [...listings].sort((a, b) =>
 ### 🏨 Página Room Detail (`/rooms/[id]`)
 
 **Propósito**: Información detallada con galería, amenities y reserva.
+
+**Referencia Visual**: Ver `ScreenShotsAirbnb/airbnbrooms.png`
 
 **Layout**:
 ```

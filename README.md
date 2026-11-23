@@ -6,6 +6,17 @@ Una réplica moderna de la interfaz de Airbnb construida con **Next.js 16**, **T
 
 ---
 
+## 📸 Referencias Visuales
+
+Consulta `ScreenShotsAirbnb/` para ver ejemplos visuales de cada página:
+
+- **airbnbhome.png** - Home con búsqueda y filtros
+- **airbnbhomeconmodal.png** - Home con modal de preferencias
+- **airbnbhomes.png** - Catálogo de resultados
+- **airbnbrooms.png** - Detalle de habitación
+
+---
+
 ## 📖 Documentación
 
 La documentación del proyecto se encuentra en los siguientes archivos:
