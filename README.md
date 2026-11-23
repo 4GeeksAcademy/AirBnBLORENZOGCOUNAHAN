@@ -1,36 +1,118 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Airbnb Clone - Next.js 16 Project
 
-## Getting Started
+Una réplica moderna de la interfaz de Airbnb construida con **Next.js 16**, **TypeScript**, **Tailwind CSS** y el **App Router**.
 
-First, run the development server:
+**Proyecto completo con estructura base, componentes y tipos TypeScript implementados.**
+
+---
+
+## 📖 Documentación
+
+La documentación del proyecto se encuentra en los siguientes archivos:
+
+| Archivo | Propósito |
+|---------|-----------|
+| [SPEC.md](./SPEC.md) | Especificación técnica completa - fuente de verdad del proyecto |
+| [PLAN.md](./PLAN.md) | Arquitectura, estructura de carpetas y componentes |
+| [TASKS.md](./TASKS.md) | Checklist de verificación (144 items) |
+| [ESTATUS_PROYECTO.md](./ESTATUS_PROYECTO.md) | Estado actual e índice de navegación |
+
+---
+
+## 🚀 Inicio Rápido
 
 ```bash
+# Instalar dependencias
+npm install
+
+# Ejecutar en modo desarrollo
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Abre http://localhost:3000
+
+# Compilar para producción
+npm run build
+
+# Iniciar servidor de producción
+npm start
+
+# Verificar código
+npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Estructura del Proyecto
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+/
+├── app/
+│   ├── layout.tsx              # Layout raíz
+│   ├── page.tsx                # Home (/)
+│   ├── catalog/
+│   │   └── page.tsx            # Catalog (/catalog)
+│   └── rooms/
+│       └── [id]/
+│           └── page.tsx        # Room detail (/rooms/[id])
+├── components/
+│   ├── Navbar.tsx
+│   ├── SearchBar.tsx
+│   ├── CategoryFilter.tsx
+│   ├── ListingCard.tsx
+│   ├── ListingGrid.tsx
+│   ├── CatalogHeader.tsx
+│   ├── MapPlaceholder.tsx
+│   ├── PhotoGallery.tsx
+│   ├── RoomHeader.tsx
+│   ├── HostInfo.tsx
+│   ├── AmenitiesList.tsx
+│   ├── BookingCard.tsx
+│   └── BackButton.tsx
+├── types/
+│   └── index.ts                # TypeScript types
+├── data/
+│   └── listings.ts             # Mock data
+├── context.md
+└── package.json
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Stack Tecnológico
 
-## Learn More
+- **Next.js 16** - Framework React con App Router
+- **TypeScript** - Tipado estático (strict mode)
+- **Tailwind CSS** - Estilos utility-first
+- **React 19** - Incluido con Next.js 16
 
-To learn more about Next.js, take a look at the following resources:
+## Especificaciones Técnicas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Páginas
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Ruta | Descripción |
+|------|-------------|
+| `/` | Home - Búsqueda y filtro de alojamientos |
+| `/catalog` | Catálogo - Resultados con ordenamiento |
+| `/rooms/[id]` | Detalle - Información completa del alojamiento |
 
-## Deploy on Vercel
+### Componentes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Navegación**: Navbar  
+**Búsqueda**: SearchBar, CategoryFilter  
+**Catálogo**: ListingCard, ListingGrid, CatalogHeader  
+**Detalle**: RoomHeader, PhotoGallery, HostInfo, AmenitiesList, BookingCard  
+**Utilidad**: BackButton, MapPlaceholder
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Responsive Design
+
+- Mobile: 375px
+- Tablet: 768px (`md:`)
+- Desktop: 1024px+ (`lg:`)
+
+## Convenciones de Código
+
+- **TypeScript**: Strict mode, tipos explícitos
+- **Componentes**: Funcionales con `const`, una responsabilidad
+- **Tailwind**: Solo utilities, sin CSS Modules
+- **Navigation**: Usar `<Link>` de Next.js
+- **Data**: Simulado con `useState` + `useEffect`
+- **Comments**: Solo cuando aclaran lógica compleja
+
+## 📄 Licencia
+
+Proyecto educativo para 4Geeks Academy
