@@ -1,6 +1,3 @@
-// PhotoGallery component - Image gallery with previous/next navigation
-import React from 'react';
-
 interface PhotoGalleryProps {
   photos: string[];
   currentIndex: number;
@@ -8,32 +5,46 @@ interface PhotoGalleryProps {
   onNext: () => void;
 }
 
-const PhotoGallery: React.FC<PhotoGalleryProps> = ({
+const PhotoGallery = ({
   photos,
   currentIndex,
   onPrev,
   onNext,
-}) => {
+}: PhotoGalleryProps) => {
+  const photo = photos[currentIndex];
+
   return (
-    <div className="bg-gray-300 h-80 rounded-lg flex items-center justify-between p-4">
+    <section aria-label="Galería de fotos" className="relative">
+      <div
+        role="img"
+        aria-label={photo}
+        className="flex h-64 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-100 via-stone-100 to-amber-100 sm:h-96"
+      >
+        <div className="text-center text-gray-700">
+          <span aria-hidden="true" className="text-6xl">🏡</span>
+          <p className="mt-3 text-sm font-medium">{photo}</p>
+        </div>
+      </div>
       <button
+        type="button"
+        aria-label="Foto anterior"
         onClick={onPrev}
-        className="bg-white rounded-full p-2 hover:bg-gray-100"
+        className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow transition hover:scale-105"
       >
         ←
       </button>
-      <div className="flex-1 text-center">
-        <p className="text-gray-700">
-          {currentIndex + 1} / {photos.length}
-        </p>
-      </div>
       <button
+        type="button"
+        aria-label="Foto siguiente"
         onClick={onNext}
-        className="bg-white rounded-full p-2 hover:bg-gray-100"
+        className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow transition hover:scale-105"
       >
         →
       </button>
-    </div>
+      <p className="absolute bottom-4 right-4 rounded-lg bg-gray-900/75 px-3 py-1 text-sm text-white">
+        {currentIndex + 1} / {photos.length}
+      </p>
+    </section>
   );
 };
 

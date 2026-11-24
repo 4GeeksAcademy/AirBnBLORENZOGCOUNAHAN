@@ -1,21 +1,20 @@
-// BookingCard component - Price display, guest counter, and booking CTA
-import React from 'react';
-
 interface BookingCardProps {
   pricePerNight: number;
   guestCount: number;
   onGuestChange: (count: number) => void;
+  minGuests: number;
   maxGuests: number;
 }
 
-const BookingCard: React.FC<BookingCardProps> = ({
+const BookingCard = ({
   pricePerNight,
   guestCount,
   onGuestChange,
+  minGuests,
   maxGuests,
-}) => {
+}: BookingCardProps) => {
   const handleDecrement = () => {
-    if (guestCount > 1) onGuestChange(guestCount - 1);
+    if (guestCount > minGuests) onGuestChange(guestCount - 1);
   };
 
   const handleIncrement = () => {
@@ -23,35 +22,46 @@ const BookingCard: React.FC<BookingCardProps> = ({
   };
 
   return (
-    <div className="border rounded-lg p-6 sticky top-4 bg-white">
-      <div className="mb-4">
-        <p className="text-2xl font-bold">${pricePerNight}</p>
-        <p className="text-sm text-gray-600">per night</p>
+    <aside className="rounded-2xl border border-gray-200 bg-white p-5 shadow-lg md:sticky md:top-24 md:self-start sm:p-6">
+      <div className="mb-5 flex items-baseline gap-1">
+        <p className="text-2xl font-semibold text-gray-900">${pricePerNight}</p>
+        <p className="text-sm text-gray-600">por noche</p>
       </div>
 
-      <div className="mb-4">
-        <label className="block text-sm font-semibold mb-2">Guests</label>
-        <div className="flex items-center gap-4">
+      <div className="mb-5 rounded-xl border border-gray-400 p-4">
+        <label className="mb-3 block text-sm font-semibold text-gray-900">
+          Huéspedes
+        </label>
+        <div className="flex items-center justify-between">
           <button
+            type="button"
+            aria-label="Reducir huéspedes"
+            disabled={guestCount <= minGuests}
             onClick={handleDecrement}
-            className="border rounded px-3 py-2 hover:bg-gray-100"
+            className="h-9 w-9 rounded-full border border-gray-400 text-lg disabled:cursor-not-allowed disabled:opacity-40"
           >
             −
           </button>
-          <span className="text-lg">{guestCount}</span>
+          <span aria-live="polite" className="font-medium">{guestCount}</span>
           <button
+            type="button"
+            aria-label="Aumentar huéspedes"
+            disabled={guestCount >= maxGuests}
             onClick={handleIncrement}
-            className="border rounded px-3 py-2 hover:bg-gray-100"
+            className="h-9 w-9 rounded-full border border-gray-400 text-lg disabled:cursor-not-allowed disabled:opacity-40"
           >
             +
           </button>
         </div>
       </div>
 
-      <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">
-        Reserve
+      <button
+        type="button"
+        className="w-full rounded-xl bg-rose-600 py-3 font-semibold text-white transition hover:bg-rose-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-700"
+      >
+        Reservar
       </button>
-    </div>
+    </aside>
   );
 };
 

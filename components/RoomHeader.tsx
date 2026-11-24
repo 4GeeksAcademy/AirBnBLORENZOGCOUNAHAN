@@ -1,6 +1,3 @@
-// RoomHeader component - Room title, rating, reviews, and location
-import React from 'react';
-
 interface RoomHeaderProps {
   title: string;
   rating: number;
@@ -8,22 +5,20 @@ interface RoomHeaderProps {
   location: string;
 }
 
-const RoomHeader: React.FC<RoomHeaderProps> = ({
+const RoomHeader = ({
   title,
   rating,
   reviewCount,
   location,
-}) => {
-  return (
-    <div className="mb-6">
-      <h1 className="text-3xl font-bold mb-2">{title}</h1>
-      <div className="flex items-center gap-2 mb-2">
-        <span>⭐ {rating}</span>
-        <span className="text-gray-600">({reviewCount} reviews)</span>
-      </div>
-      <p className="text-gray-600">📍 {location}</p>
+}: RoomHeaderProps) => (
+  <header className="mb-6 border-b border-gray-200 pb-5">
+    <h1 className="text-2xl font-semibold text-gray-900 sm:text-3xl">{title}</h1>
+    <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+      <span className="font-medium">★ {rating.toFixed(1)}</span>
+      <span className="text-gray-500">{reviewCount} reseñas</span>
+      <span className="text-gray-500">· {location}</span>
     </div>
-  );
-};
+  </header>
+);
 
 export default RoomHeader;

@@ -1,5 +1,3 @@
-// CatalogHeader component - Results count and sort order control
-import React from 'react';
 import { SortOrder } from '@/types';
 
 interface CatalogHeaderProps {
@@ -8,26 +6,25 @@ interface CatalogHeaderProps {
   onSortChange: (order: SortOrder) => void;
 }
 
-const CatalogHeader: React.FC<CatalogHeaderProps> = ({
+const CatalogHeader = ({
   totalResults,
   sortOrder,
   onSortChange,
-}) => {
-  return (
-    <div className="flex justify-between items-center mb-4">
-      <h2 className="text-xl font-semibold">
-        {totalResults} properties found
-      </h2>
+}: CatalogHeaderProps) => (
+    <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+      <h1 className="text-lg font-semibold text-gray-900">
+        {totalResults} {totalResults === 1 ? 'alojamiento' : 'alojamientos'}
+      </h1>
       <select
         value={sortOrder}
-        onChange={(e) => onSortChange(e.target.value as SortOrder)}
-        className="border rounded px-3 py-2"
+        aria-label="Ordenar por precio"
+        onChange={(event) => onSortChange(event.target.value as SortOrder)}
+        className="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus-visible:outline-2 focus-visible:outline-rose-600"
       >
-        <option value="asc">Price: Low to High</option>
-        <option value="desc">Price: High to Low</option>
+        <option value="asc">Precio: menor a mayor</option>
+        <option value="desc">Precio: mayor a menor</option>
       </select>
     </div>
-  );
-};
+);
 
 export default CatalogHeader;

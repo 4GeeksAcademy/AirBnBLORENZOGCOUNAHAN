@@ -1,23 +1,41 @@
-// ListingGrid component - Responsive grid of property cards
-import React from 'react';
 import { Listing } from '@/types';
 import ListingCard from './ListingCard';
 
 interface ListingGridProps {
   listings: Listing[];
   loading: boolean;
+  columns?: 'two' | 'three';
 }
 
-const ListingGrid: React.FC<ListingGridProps> = ({ listings, loading }) => {
+const GRID_COLUMNS = {
+  two: 'grid-cols-1 md:grid-cols-2',
+  three: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+};
+
+const ListingGrid = ({
+  listings,
+  loading,
+  columns = 'three',
+}: ListingGridProps) => {
   if (loading) {
-    return <div className="text-center py-8">Loading...</div>;
+    return (
+      <p role="status" className="py-12 text-center text-sm text-gray-600">
+        Cargando alojamientos…
+      </p>
+    );
+  }
+
+  if (listings.length === 0) {
+    return (
+      <p className="py-12 text-center text-sm text-gray-600">
+        No encontramos alojamientos con esos filtros.
+      </p>
+    );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {listings.map((listing) => (
-        <ListingCard key={listing.id} {...listing} />
-      ))}
+    <div className={`grid gap-x-5 gap-y-8 ${GRID_COLUMNS[columns]}`}>
+      {listings.map((listing) => <ListingCard key={listing.id} {...listing} />)}
     </div>
   );
 };

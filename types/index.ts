@@ -9,6 +9,11 @@ export interface Listing {
   category: string;
 }
 
+export interface ListingCategory {
+  label: string;
+  icon: string;
+}
+
 export interface Room extends Listing {
   description: string;
   photos: string[];
@@ -16,6 +21,7 @@ export interface Room extends Listing {
   hostAvatar: string;
   yearsAsHost: number;
   amenities: Amenity[];
+  minGuests: number;
   maxGuests: number;
 }
 
