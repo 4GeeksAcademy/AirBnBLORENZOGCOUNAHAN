@@ -1,514 +1,101 @@
-# 📐 PLAN - Arquitectura y Estructura
+# Plan de implementación
 
-**Proyecto**: AirBnB Clone  
-**Fecha**: 2026-11-23  
-**Estado**: ✅ Configurado 100%
+## Fuente de verdad
 
----
+`SPEC.md` es la especificación del proyecto y prevalece ante cualquier discrepancia. Este plan resume su arquitectura, flujo visual, comportamiento y validación; `TASKS.md` registra el avance real.
 
-## 📸 Referencias Visuales
+## Objetivo y alcance
 
-Consulta `ScreenShotsAirbnb/` para ver ejemplos visuales de la estructura implementada:
+Construir tres páginas de alojamiento vacacional en Next.js 16 con TypeScript, Tailwind CSS y App Router:
 
-- **airbnbhome.png** - Home page (/) con SearchBar, CategoryFilter, ListingGrid
-- **airbnbhomeconmodal.png** - Home con modal de preferencias (UX adicional)
-- **airbnbhomes.png** - Catalog page (/catalog) con MapPlaceholder
-- **airbnbrooms.png** - Room Detail page (/rooms/[id]) con PhotoGallery, BookingCard, AmenitiesList
+- `/`: búsqueda, categorías y alojamientos.
+- `/catalog`: resultados ordenables y área de mapa.
+- `/rooms/[id]`: detalle de alojamiento, galería, anfitrión, servicios y reserva.
 
-Estas imágenes sirven como guía visual para la implementación de cada página y componente.
+La interfaz se diseña primero para 375px y adapta sus layouts desde 768px. La navegación interna usa `Link` de Next.js. No se usan librerías UI preconstruidas.
 
----
+## Flujo antes de implementar cada vista
 
-## 📂 Estructura de Carpetas (ACTUAL)
+1. Mantener `context.md` en la raíz con el mini-brief, usuario y componentes.
+2. Capturar cada vista de referencia en un viewport de 375px y adjuntarla al agente de código.
+3. Pedir al agente nombres de componentes, props y relaciones de layout; documentar la especificación en `context.md` o en comentarios antes de implementar la vista.
+4. Revisar la configuración creada con `npx create-next-app` y verificar el servidor de desarrollo antes de implementar componentes.
 
-```
-/workspaces/AirBnBLORENZOGCOUNAHAN/
-│
-├── 📚 DOCUMENTACIÓN
-│   ├── SPEC.md                        ⭐ Especificación técnica
-│   ├── PLAN.md                        📐 Este archivo (arquitectura)
-│   ├── TASKS.md                       ✅ Verificación de requisitos
-│   ├── README.md                      🔧 Instalación
-│   ├── context.md                     🎨 Brief de producto
-│   └── ESTATUS_PROYECTO.md            📊 Estado + próximos pasos
-│
-├── 📸 REFERENCIAS VISUALES
-│   └── ScreenShotsAirbnb/             Visual reference para cada página
-│       ├── airbnbhome.png            🏠 Home page
-│       ├── airbnbhomeconmodal.png    🍪 Home con modal
-│       ├── airbnbhomes.png           📋 Catalog page
-│       └── airbnbrooms.png           🏨 Room detail page
-│
-├── 📄 CONFIGURACIÓN
-│   ├── package.json                   Dependencies
-│   ├── package-lock.json              Lock
-│   ├── tsconfig.json                  TypeScript (strict: true)
-│   ├── next.config.ts                 Next.js config
-│   ├── tailwind.config.ts             Tailwind config
-│   ├── postcss.config.mjs             PostCSS
-│   ├── .eslintrc.json                 ESLint
-│   └── .gitignore                     Git
-│
-├── 🎨 ESTILOS
-│   └── styles/
-│       └── globals.css                Estilos globales Tailwind
-│
-├── 📄 PÁGINAS (3 total)
-│   └── app/
-│       ├── layout.tsx                 Layout raíz
-│       ├── page.tsx                   🏠 HOME (/)
-│       ├── catalog/
-│       │   └── page.tsx               📋 CATALOG (/catalog)
-│       └── rooms/
-│           └── [id]/
-│               └── page.tsx           🏨 DETAIL (/rooms/[id])
-│
-├── 🧩 COMPONENTES (13 total)
-│   └── components/
-│       ├── Header.tsx                 Navbar
-│       ├── SearchBar.tsx              Input de búsqueda
-│       ├── CategoryFilter.tsx         Selector de categorías
-│       ├── ListingCard.tsx            Tarjeta individual (reutilizable)
-│       ├── ListingGrid.tsx            Grid de tarjetas
-│       ├── CatalogHeader.tsx          Encabezado con contador
-│       ├── MapPlaceholder.tsx         Área de mapa
-│       ├── PhotoGallery.tsx           Galería de fotos
-│       ├── RoomHeader.tsx             Título + rating
-│       ├── HostInfo.tsx               Tarjeta de anfitrión
-│       ├── AmenitiesList.tsx          Cuadrícula de amenities
-│       ├── BookingCard.tsx            Panel de reserva
-│       └── Footer.tsx                 Pie de página
-│
-├── 🎨 TIPOS
-│   └── types/
-│       └── index.ts                   Interfaces TypeScript
-│
-├── 📦 PÚBLICO
-│   └── public/                        Assets estáticos
-│
-└── 🔧 HERRAMIENTAS
-    ├── .next/                         Build cache (ignorar)
-    ├── node_modules/                  Dependencies (ignorar)
-    └── .git/                          Version control
+Las imágenes de `ScreenShotsAirbnb/` son referencias del repositorio; su existencia no demuestra por sí sola que se haya realizado el flujo de captura y prompts descrito arriba. Se mantiene la especificación visual en `context.md`.
 
+## Arquitectura
+
+```text
+app/
+  layout.tsx
+  page.tsx                 Home: búsqueda, categoría, carga y grid
+  catalog/page.tsx         Catálogo: carga, orden, grid y mapa
+  rooms/[id]/page.tsx      Ruta dinámica del detalle
+components/
+  Header.tsx               Marca, búsqueda controlada y menú de usuario
+  SearchBar.tsx            Campo de búsqueda
+  CategoryFilter.tsx       Selector horizontal de categoría
+  ListingCard.tsx          Tarjeta enlazada al detalle
+  ListingGrid.tsx          Grid y estado de carga/vacío
+  CatalogHeader.tsx        Contador y selector de orden
+  MapPlaceholder.tsx       Mapa de muestra
+  PhotoGallery.tsx         Foto placeholder y navegación
+  RoomHeader.tsx           Título, rating, reseñas y ubicación
+  HostInfo.tsx             Avatar placeholder y datos de anfitrión
+  AmenitiesList.tsx        Cuadrícula icono + etiqueta
+  BookingCard.tsx          Precio, huéspedes y CTA
+  BackButton.tsx           Navegación interna de regreso
+  Footer.tsx               Pie compartido
+  RoomDetailView.tsx       Composición del contenido del detalle
+  RoomRouteContent.tsx     Lookup por ID, carga y estado del detalle
+types/index.ts             Tipos Listing, Room, Amenity y SortOrder
+app/mock-home.ts           Categorías de Home
+app/page.tsx               Fixtures de alojamientos de Home
+app/catalog/page.tsx       Fixtures del catálogo
 ```
 
----
+La ruta `app/rooms/[id]/page.tsx` compone Header, `Suspense`, `RoomRouteContent` y Footer. Los fixtures simulados permanecen en las rutas/componentes permitidos y se identifican por ID en el detalle.
 
-## 🏗️ Arquitectura de Componentes
+Cada componente funcional vive en su propio archivo, usa `const` y mantiene una sola responsabilidad (objetivo: no superar ~80 líneas de JSX y lógica). `ListingCard` y `ListingGrid` se comparten entre Home y Catálogo.
 
-### Jerarquía de Componentes
+## Diseño y comportamiento por página
 
-```
-Layout (app/layout.tsx)
-│
-├── Page / (Home)
-│   ├── Header
-│   ├── SearchBar
-│   ├── CategoryFilter
-│   ├── ListingGrid
-│   │   └── ListingCard (reutilizable)
-│   └── Footer
-│
-├── Page /catalog (Catalog)
-│   ├── Header
-│   ├── BackButton
-│   ├── CatalogHeader
-│   ├── Grid + MapPlaceholder
-│   │   ├── ListingGrid
-│   │   │   └── ListingCard (reutilizable)
-│   │   └── MapPlaceholder (sticky)
-│   └── Footer
-│
-└── Page /rooms/[id] (Detail)
-    ├── Header
-    ├── BackButton
-    ├── Grid
-    │   ├── PhotoGallery
-    │   ├── RoomHeader
-    │   ├── HostInfo
-    │   └── AmenitiesList
-    │   │
-    │   └── BookingCard (sticky right)
-    └── Footer
-```
+### Home
 
-### Componentes Reutilizables
+- Header con marca, búsqueda y controles de usuario.
+- Búsqueda controlada por `useState`; filtra resultados en cada pulsación.
+- Categorías con icono, etiqueta y estado activo; filtran las tarjetas.
+- `useEffect` simula la carga de datos al montar; muestra carga hasta recibirlos.
+- Grid: 1 columna en 375px, 2 desde 768px y 3 desde 1024px.
+- Cada tarjeta navega a `/rooms/[id]` usando `Link`.
 
-**ListingCard**: Usado en Home + Catalog
-```typescript
-// Recibe props: id, image, title, price, rating, reviews
-// Retorna: Tarjeta individual con imagen, título, precio, rating
-```
+### Catálogo
 
-**ListingGrid**: Usado en Home + Catalog
-```typescript
-// Recibe props: listings[], loading
-// Retorna: Grid responsivo (1→2→3 cols)
-```
+- Carga simulada, contador de resultados y orden ascendente/descendente por precio.
+- Reutiliza tarjetas de Home.
+- Mapa placeholder debajo del grid en móvil y a su derecha desde 768px.
 
-**Header/Navbar**: Usado en todas las páginas
-```typescript
-// Recibe props: —
-// Retorna: Barra de navegación con logo, busca, usuario
-```
+### Detalle
 
----
+- Resuelve el alojamiento por el ID dinámico y maneja el ID inexistente.
+- Carga simulada con indicador visible.
+- Galería de placeholders con navegación anterior/siguiente.
+- Cabecera, anfitrión, servicios con icono/etiqueta y reserva.
+- Contador de huéspedes limitado al rango `[minGuests, maxGuests]`.
+- En móvil apila el contenido; desde 768px presenta contenido y reserva en columnas.
+- Botón de regreso al Catálogo con `Link`.
 
-## 🔀 Flujo de Datos
+## Estilos y calidad
 
-### Home Page (/)
-```
-user action
-    ↓
-SearchBar onChange
-    ↓
-setSearchTerm(value)
-    ↓
-listings.filter(bySearchTerm && byCategory)
-    ↓
-ListingGrid recibe filtered listings
-    ↓
-ListingCard renderiza cada una
-```
+- Tailwind CSS para los estilos; sin componentes UI externos, CSS Modules ni objetos `style={{}}`.
+- Diseño responsive mobile-first, sin overflow horizontal y con controles usables en móvil.
+- Tipos TypeScript estrictos para los datos y props; sin `any`.
+- Todos los enlaces internos usan `Link`; sin navegación interna con `<a href>`.
 
-### Catalog Page (/catalog)
-```
-user action
-    ↓
-CatalogHeader onChange
-    ↓
-setSortOrder('asc' | 'desc')
-    ↓
-listings.sort(byPrice)
-    ↓
-ListingGrid recibe sorted listings
-    ↓
-ListingCard renderiza cada una
-```
+## Fases
 
-### Room Detail Page (/rooms/[id])
-```
-URL params
-    ↓
-useParams() → roomId
-    ↓
-useEffect → fetch mockRooms[roomId]
-    ↓
-setRoom(data)
-    ↓
-componentes reciben room data
-    ↓
-user clicks gallery buttons
-    ↓
-setPhotoIndex(next/prev)
-    ↓
-PhotoGallery re-renderiza
-```
-
----
-
-## 🔧 Hooks por Página
-
-### Home (/)
-```typescript
-// Estado
-const [searchTerm, setSearchTerm] = useState('');
-const [activeCategory, setActiveCategory] = useState<string | null>(null);
-const [listings, setListings] = useState<Listing[]>([]);
-const [loading, setLoading] = useState(true);
-
-// Efectos
-useEffect(() => {
-  // Simulación de carga asincrónica
-  setLoading(true);
-  setTimeout(() => {
-    setListings([...]); // Datos simulados
-    setLoading(false);
-  }, 1500);
-}, []);
-```
-
-### Catalog (/catalog)
-```typescript
-// Estado
-const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-const [listings, setListings] = useState<Listing[]>([]);
-const [loading, setLoading] = useState(true);
-
-// Efectos
-useEffect(() => {
-  setLoading(true);
-  setTimeout(() => {
-    setListings([...]);
-    setLoading(false);
-  }, 1500);
-}, []);
-```
-
-### Room Detail (/rooms/[id])
-```typescript
-// Router
-const params = useParams();
-const roomId = params.id as string;
-
-// Estado
-const [room, setRoom] = useState<Room | null>(null);
-const [loading, setLoading] = useState(true);
-const [photoIndex, setPhotoIndex] = useState(0);
-const [guestCount, setGuestCount] = useState(1);
-
-// Efectos
-useEffect(() => {
-  setLoading(true);
-  setTimeout(() => {
-    setRoom(mockRooms[roomId]);
-    setLoading(false);
-  }, 1500);
-}, [roomId]);
-
-// Funciones
-const handlePrevPhoto = () => {
-  setPhotoIndex(prev => prev === 0 ? room!.photos.length - 1 : prev - 1);
-};
-
-const handleNextPhoto = () => {
-  setPhotoIndex(prev => prev === room!.photos.length - 1 ? 0 : prev + 1);
-};
-```
-
----
-
-## 🎨 Tipos TypeScript
-
-### Archivo: `/types/index.ts`
-
-```typescript
-export interface Listing {
-  id: string;
-  title: string;
-  image: string;
-  price: number;
-  rating: number;
-  reviews: number;
-  location: string;
-  category: string;
-}
-
-export interface Amenity {
-  id: string;
-  name: string;
-  icon: string; // emoji o clase
-}
-
-export interface Review {
-  id: string;
-  author: string;
-  rating: number;
-  text: string;
-  date: string;
-}
-
-export interface Room extends Listing {
-  description: string;
-  photos: string[];
-  hostName: string;
-  hostAvatar: string;
-  yearsAsHost: number;
-  amenities: Amenity[];
-  maxGuests: number;
-  reviews: Review[];
-}
-
-export type SortOrder = 'asc' | 'desc';
-```
-
----
-
-## 🌐 Rutas
-
-| Ruta | Componente | Propósito | Estado |
-|------|-----------|----------|--------|
-| `/` | `app/page.tsx` | Home con búsqueda y grid | ✅ |
-| `/catalog` | `app/catalog/page.tsx` | Resultados con ordenación | ✅ |
-| `/rooms/[id]` | `app/rooms/[id]/page.tsx` | Detalle del alojamiento | ✅ |
-
----
-
-## 📊 Componentes Detallados
-
-### 1. Header (navbar)
-- **Archivo**: `components/Header.tsx`
-- **Props**: `titulo?: string`
-- **Estado**: ninguno
-- **Uso**: Todas las páginas
-- **Responsive**: Collapsible en mobile
-
-### 2. SearchBar
-- **Archivo**: `components/SearchBar.tsx`
-- **Props**: `value: string`, `onChange: (value: string) => void`
-- **Estado**: ninguno (controlado por padre)
-- **Uso**: Home
-- **Responsive**: Full-width
-
-### 3. CategoryFilter
-- **Archivo**: `components/CategoryFilter.tsx`
-- **Props**: `categories: string[]`, `activeCategory: string | null`, `onSelect: (cat: string) => void`
-- **Estado**: ninguno (controlado por padre)
-- **Uso**: Home
-- **Responsive**: Scroll horizontal en mobile
-
-### 4. ListingCard
-- **Archivo**: `components/ListingCard.tsx`
-- **Props**: `id: string`, `image: string`, `title: string`, `price: number`, `rating: number`, `reviews: number`
-- **Estado**: ninguno
-- **Uso**: Home, Catalog (reutilizable)
-- **Responsive**: Adapta a grid
-
-### 5. ListingGrid
-- **Archivo**: `components/ListingGrid.tsx`
-- **Props**: `listings: Listing[]`, `loading: boolean`
-- **Estado**: ninguno
-- **Uso**: Home, Catalog (reutilizable)
-- **Responsive**: 1→2→3 cols
-
-### 6. CatalogHeader
-- **Archivo**: `components/CatalogHeader.tsx`
-- **Props**: `totalResults: number`, `sortOrder: 'asc' | 'desc'`, `onSortChange: (order) => void`
-- **Estado**: ninguno (controlado por padre)
-- **Uso**: Catalog
-- **Responsive**: Stack vertical en mobile
-
-### 7. MapPlaceholder
-- **Archivo**: `components/MapPlaceholder.tsx`
-- **Props**: ninguna
-- **Estado**: ninguno
-- **Uso**: Catalog
-- **Responsive**: Sticky right en desktop, abajo en mobile
-
-### 8. PhotoGallery
-- **Archivo**: `components/PhotoGallery.tsx`
-- **Props**: `photos: string[]`, `currentIndex: number`, `onPrev: () => void`, `onNext: () => void`
-- **Estado**: ninguno (controlado por padre)
-- **Uso**: Room Detail
-- **Responsive**: Full-width
-
-### 9. RoomHeader
-- **Archivo**: `components/RoomHeader.tsx`
-- **Props**: `title: string`, `rating: number`, `reviewCount: number`, `location: string`
-- **Estado**: ninguno
-- **Uso**: Room Detail
-- **Responsive**: Stack vertical en mobile
-
-### 10. HostInfo
-- **Archivo**: `components/HostInfo.tsx`
-- **Props**: `name: string`, `avatar: string`, `yearsAsHost: number`
-- **Estado**: ninguno
-- **Uso**: Room Detail
-- **Responsive**: Card horizontal
-
-### 11. AmenitiesList
-- **Archivo**: `components/AmenitiesList.tsx`
-- **Props**: `amenities: Amenity[]`
-- **Estado**: ninguno
-- **Uso**: Room Detail
-- **Responsive**: 2→3→4 cols
-
-### 12. BookingCard
-- **Archivo**: `components/BookingCard.tsx`
-- **Props**: `pricePerNight: number`, `guestCount: number`, `onGuestChange: (count: number) => void`, `maxGuests: number`
-- **Estado**: ninguno (guestCount controlado por padre)
-- **Uso**: Room Detail
-- **Responsive**: Sticky right en desktop, sticky bottom en mobile
-
-### 13. Footer
-- **Archivo**: `components/Footer.tsx`
-- **Props**: ninguna
-- **Estado**: ninguno
-- **Uso**: Todas las páginas
-- **Responsive**: Stack vertical en mobile
-
----
-
-## 🚀 Fases de Implementación
-
-### Fase 1: Configuración (1-2 horas)
-- [x] Proyecto Next.js 16 configurado
-- [x] TypeScript en strict mode
-- [x] Tailwind CSS integrado
-- [x] Estructura de carpetas lista
-- [x] Dev server funciona
-
-### Fase 2: Tipos TypeScript (30 minutos)
-- [x] `/types/index.ts` creado
-- [x] Interfaces: `Listing`, `Room`, `Amenity`, etc.
-- [x] Tipos específicos (no `any`)
-
-### Fase 3: Componentes Base (2-3 horas) [PRÓXIMO]
-- [ ] Header
-- [ ] SearchBar
-- [ ] CategoryFilter
-- [ ] ListingCard
-- [ ] PhotoGallery
-- [ ] RoomHeader
-- [ ] HostInfo
-- [ ] AmenitiesList
-- [ ] BookingCard
-- [ ] etc.
-
-### Fase 4: Home Page (1-2 horas)
-- [ ] Implementar estado (searchTerm, activeCategory)
-- [ ] Conectar SearchBar → filtrar
-- [ ] Conectar CategoryFilter → filtrar
-- [ ] useEffect con datos simulados
-- [ ] ListingGrid con ListingCard
-- [ ] Tailwind CSS styling
-
-### Fase 5: Catalog Page (1 hora)
-- [ ] Implementar estado (sortOrder)
-- [ ] CatalogHeader con contador
-- [ ] Ordenación por precio
-- [ ] MapPlaceholder
-- [ ] Responsive layout (grid + mapa)
-
-### Fase 6: Room Detail Page (1-2 horas)
-- [ ] useParams() para leer [id]
-- [ ] PhotoGallery con navegación
-- [ ] RoomHeader + HostInfo + AmenitiesList
-- [ ] BookingCard con contador
-- [ ] useEffect con datos simulados
-- [ ] Responsive layout (content + booking sticky)
-
-### Fase 7: Navegación y Polish (30 minutos)
-- [ ] `<Link>` entre páginas
-- [ ] Testing responsive (375px, 768px, 1024px)
-- [ ] Code review
-- [ ] Bug fixes
-
----
-
-## ✅ Estado Actual
-
-| Elemento | Estado | Notas |
-|----------|--------|-------|
-| Proyecto Next.js | ✅ | v16.4.6 con TypeScript y Tailwind |
-| Rutas (3) | ✅ | Todas creadas y compilables |
-| Componentes (13) | ✅ | Todos creados con lógica base |
-| Tipos TypeScript | ✅ | Interfaces definidas |
-| Build | ✅ | `npm run build` sin errores |
-| Dev Server | ✅ | `npm run dev` funciona |
-| Documentación | ✅ | SPEC.md, PLAN.md, TASKS.md |
-
----
-
-## 🎯 Próximos Pasos
-
-1. **Leer SPEC.md** (20 min) - Especificación técnica
-2. **Leer TASKS.md** (5 min) - Checklist de requisitos
-3. **Comenzar Fase 3** - Implementar componentes base con diseño visual
-4. **Testing** - Verificar en 375px, 768px, 1024px
-
----
-
-**Versión**: 1.0  
-**Estado**: ✅ ESTRUCTURA LISTA
+1. Alinear documentación y registrar el brief/las especificaciones visuales.
+2. Completar tipos y datos simulados compartidos.
+3. Implementar Header, tarjetas, navegación, galería, reserva y componentes compartidos.
+4. Ajustar las tres rutas, estados, filtros, ordenación y layouts responsive.
+5. Ejecutar validaciones dirigidas y actualizar `TASKS.md` con evidencia; dejar explícitas las comprobaciones manuales pendientes.

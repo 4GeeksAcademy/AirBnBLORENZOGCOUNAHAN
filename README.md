@@ -2,7 +2,7 @@
 
 Una réplica moderna de la interfaz de Airbnb construida con **Next.js 16**, **TypeScript**, **Tailwind CSS** y el **App Router**.
 
-**Proyecto completo con estructura base, componentes y tipos TypeScript implementados.**
+Proyecto educativo con tres rutas, componentes React reutilizables y datos simulados.
 
 ---
 
@@ -25,8 +25,9 @@ La documentación del proyecto se encuentra en los siguientes archivos:
 |---------|-----------|
 | [SPEC.md](./SPEC.md) | Especificación técnica completa - fuente de verdad del proyecto |
 | [PLAN.md](./PLAN.md) | Arquitectura, estructura de carpetas y componentes |
-| [TASKS.md](./TASKS.md) | Checklist de verificación (144 items) |
+| [TASKS.md](./TASKS.md) | Checklist de avance alineado con SPEC |
 | [ESTATUS_PROYECTO.md](./ESTATUS_PROYECTO.md) | Estado actual e índice de navegación |
+| [context.md](./context.md) | Brief del producto y especificaciones visuales |
 
 ---
 
@@ -57,19 +58,23 @@ npm run lint
 ├── app/
 │   ├── layout.tsx              # Layout raíz
 │   ├── page.tsx                # Home (/)
+│   ├── mock-home.ts            # Categorías de Home
 │   ├── catalog/
 │   │   └── page.tsx            # Catalog (/catalog)
 │   └── rooms/
 │       └── [id]/
 │           └── page.tsx        # Room detail (/rooms/[id])
 ├── components/
-│   ├── Navbar.tsx
+│   ├── Header.tsx
+│   ├── Footer.tsx
 │   ├── SearchBar.tsx
 │   ├── CategoryFilter.tsx
 │   ├── ListingCard.tsx
 │   ├── ListingGrid.tsx
 │   ├── CatalogHeader.tsx
 │   ├── MapPlaceholder.tsx
+│   ├── RoomDetailView.tsx
+│   ├── RoomRouteContent.tsx
 │   ├── PhotoGallery.tsx
 │   ├── RoomHeader.tsx
 │   ├── HostInfo.tsx
@@ -78,8 +83,6 @@ npm run lint
 │   └── BackButton.tsx
 ├── types/
 │   └── index.ts                # TypeScript types
-├── data/
-│   └── listings.ts             # Mock data
 ├── context.md
 └── package.json
 ```
@@ -103,7 +106,7 @@ npm run lint
 
 ### Componentes
 
-**Navegación**: Navbar  
+**Navegación**: Header, BackButton
 **Búsqueda**: SearchBar, CategoryFilter  
 **Catálogo**: ListingCard, ListingGrid, CatalogHeader  
 **Detalle**: RoomHeader, PhotoGallery, HostInfo, AmenitiesList, BookingCard  
@@ -111,9 +114,9 @@ npm run lint
 
 ### Responsive Design
 
-- Mobile: 375px
-- Tablet: 768px (`md:`)
-- Desktop: 1024px+ (`lg:`)
+- Mobile: 375px; grid de una columna.
+- Desde 768px (`md:`): layouts de mapa y detalle en columnas; grid de dos columnas.
+- Desde 1024px (`lg:`): grid de tres columnas.
 
 ## Convenciones de Código
 

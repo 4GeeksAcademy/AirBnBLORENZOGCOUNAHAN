@@ -38,11 +38,12 @@ Estas imágenes muestran el diseño y flujo de usuario esperado.
 1. [Objetivos](#objetivos)
 2. [Referencias Visuales](#referencias-visuales)
 3. [Tech Stack](#tech-stack)
-4. [Especificación por Página](#especificación-por-página)
-5. [Componentes (13 total)](#componentes)
-6. [Criterios de Evaluación](#criterios-de-evaluación)
-7. [Convenciones de Código](#convenciones-de-código)
-8. [Retos Opcionales](#retos-opcionales)
+4. [Preparación y Flujo de Prompts de Visión](#preparación-y-flujo-de-prompts-de-visión)
+5. [Especificación por Página](#especificación-por-página)
+6. [Componentes (13 total)](#componentes)
+7. [Criterios de Evaluación](#criterios-de-evaluación)
+8. [Convenciones de Código](#convenciones-de-código)
+9. [Retos Opcionales](#retos-opcionales)
 
 ---
 
@@ -84,6 +85,21 @@ Estas imágenes muestran el diseño y flujo de usuario esperado.
 
 ---
 
+## 🧭 Preparación y Flujo de Prompts de Visión
+
+### Antes de escribir código
+1. Crea `context.md` en la raíz del proyecto. Antes de implementar, describe con tus propias palabras qué contiene cada página, cuáles son sus componentes principales, quién es el usuario y qué intenta hacer.
+2. No hay una plantilla de inicio proporcionada. Pide al agente de código que configure el proyecto con `npx create-next-app`, Next.js 16, TypeScript, Tailwind CSS y App Router; revisa los comandos generados y confirma que el servidor de desarrollo arranca antes de escribir componentes.
+3. Crea un repositorio propio en GitHub, inicializa Git en el proyecto, sube un primer commit y abre el repositorio en GitHub Codespaces o clónalo localmente.
+
+### Capturas y especificaciones
+Para cada una de las tres páginas (Home, Catalog y Room Detail):
+1. Captura la interfaz original de Airbnb en un viewport móvil de 375px.
+2. Adjunta esa captura al agente de código y pídele una especificación que identifique cada componente, sus props y su relación de layout dentro de la página.
+3. Documenta la especificación generada en `context.md` o como comentario en el código antes de implementar esa página.
+
+Las imágenes de `ScreenShotsAirbnb/` sirven como referencias visuales; no sustituyen este flujo de captura, análisis y documentación.
+
 ## 📄 Especificación por Página
 
 ### 🏠 Página Home (`/`)
@@ -117,7 +133,7 @@ Estas imágenes muestran el diseño y flujo de usuario esperado.
 |---|---|---|
 | Navbar | — | — |
 | SearchBar | value, onChange | searchTerm |
-| CategoryFilter | categories, activeCategory, onSelect | activeCategory |
+| CategoryFilter | categories, activeCategory, onSelect | activeCategory; cada categoría muestra icono + etiqueta |
 | ListingGrid | listings, loading | — |
 | ListingCard | id, image, title, price, rating, reviews | — |
 
@@ -141,6 +157,7 @@ useEffect(() => {
 1. Filtrar por `searchTerm` (case-insensitive)
 2. Filtrar por `activeCategory`
 3. Mostrar indicador de carga mientras `loading === true`
+4. Al seleccionar una tarjeta, navegar a `/rooms/[id]` usando `<Link>` de Next.js.
 
 **Responsive**:
 - **375px**: grid-cols-1
@@ -205,7 +222,9 @@ const sortedListings = [...listings].sort((a, b) =>
 
 **Responsive**:
 - **375px**: ListingGrid full-width, MapPlaceholder abajo
-- **1024px+**: Grid 2 cols (left), Mapa sticky (right)
+- **768px+**: Grid 2 cols (left), Mapa sticky (right)
+
+Al seleccionar una tarjeta, navega a `/rooms/[id]` usando el componente `<Link>` de Next.js.
 
 ---
 
@@ -247,8 +266,8 @@ const sortedListings = [...listings].sort((a, b) =>
 | PhotoGallery | photos, currentIndex, onPrev, onNext | photoIndex |
 | RoomHeader | title, rating, reviewCount, location | — |
 | HostInfo | name, avatar, yearsAsHost | — |
-| AmenitiesList | amenities | — |
-| BookingCard | pricePerNight, guestCount, onGuestChange, maxGuests | guestCount |
+| AmenitiesList | amenities (icono + etiqueta) | — |
+| BookingCard | pricePerNight, guestCount, onGuestChange, minGuests, maxGuests | guestCount |
 
 **Hooks**:
 ```typescript
@@ -279,7 +298,9 @@ const handleNextPhoto = () => {
 
 **Responsive**:
 - **375px**: Stack vertical
-- **1024px+**: Grid 2 cols (content left, booking sticky right)
+- **768px+**: Grid 2 cols (content left, booking sticky right)
+
+El contador de huéspedes debe mantenerse dentro del rango inclusivo `[minGuests, maxGuests]` definido para la habitación; deshabilita o limita los controles al alcanzar esos extremos. El esquema visual usa 1–6 como ejemplo.
 
 ---
 
@@ -314,9 +335,12 @@ const handleNextPhoto = () => {
 
 ## ✅ Criterios de Evaluación
 
-### 1. Proyecto Base (10 items)
+### 1. Proyecto Base (13 items)
 - [ ] `context.md` documenta interfaz, componentes, usuario
+- [ ] `context.md` se crea antes de implementar componentes y está redactado con palabras propias
 - [ ] Proyecto configurado con `npx create-next-app`
+- [ ] Se revisan los comandos generados y se confirma que el servidor arranca antes de escribir componentes
+- [ ] Repositorio propio en GitHub, Git inicializado, primer commit subido y proyecto abierto en Codespaces o clonado localmente
 - [ ] Next.js 16, TypeScript, Tailwind CSS, App Router
 - [ ] Carpetas: `/app`, `/components`, `/types`
 - [ ] `tsconfig.json` con `strict: true`
@@ -326,7 +350,7 @@ const handleNextPhoto = () => {
 - [ ] README.md con instrucciones
 - [ ] Proyecto compilable y ejecutable
 
-### 2. Rutas y Navegación (10 items)
+### 2. Rutas y Navegación (11 items)
 - [ ] Ruta `/` (home) implementada
 - [ ] Ruta `/catalog` implementada
 - [ ] Ruta `/rooms/[id]` implementada (dinámica)
@@ -337,6 +361,7 @@ const handleNextPhoto = () => {
 - [ ] Rutas funcionan correctamente
 - [ ] Backlinks funcionan
 - [ ] Navegación fluida
+- [ ] Al seleccionar una tarjeta en Home o Catalog, se navega a `/rooms/[id]` con `<Link>`
 
 ### 3. Responsive Design (15 items)
 - [ ] Mobile (375px): correcto
@@ -389,15 +414,17 @@ const handleNextPhoto = () => {
 - [ ] Lógica de estado clara
 - [ ] Testing de estado
 
-### 6. Funcionalidad (10 items)
+### 6. Funcionalidad (12 items)
 - [ ] Home: búsqueda filtra tarjetas en tiempo real
 - [ ] Home: categorías filtran tarjetas
+- [ ] Home: cada categoría muestra icono + etiqueta
 - [ ] Home: categoría activa se resalta
 - [ ] Catalog: ordenación (asc/desc) reordena
 - [ ] Catalog: contador de resultados
 - [ ] Detail: galería navega Anterior/Siguiente
 - [ ] Detail: contador de huéspedes ±
-- [ ] Detail: rango válido de huéspedes
+- [ ] Detail: huéspedes dentro del rango inclusivo `[minGuests, maxGuests]` de la habitación
+- [ ] Detail: amenities mostrados como pares icono + etiqueta
 - [ ] Loading state visible en las 3 páginas
 - [ ] Funcionalidad sin errores de console
 
@@ -432,12 +459,13 @@ const handleNextPhoto = () => {
 - [ ] Sin `console.log` en producción
 - [ ] Imports organizados
 
-### 10. Documentación (5 items)
+### 10. Documentación (6 items)
 - [ ] `context.md`: descripción clara de interfaz
 - [ ] `context.md`: listado de páginas y componentes
 - [ ] `context.md`: descripción del usuario/rol
 - [ ] `README.md`: cómo instalar y ejecutar
 - [ ] Especificaciones documentadas en comentarios
+- [ ] Para cada página: captura original a 375px adjunta al agente, prompt para identificar componentes/props/layout y especificación documentada en `context.md` o comentarios antes de implementar esa vista
 
 ---
 
